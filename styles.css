@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #708090;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.chart {
+    width: 900px;
+    margin: 0 auto;
+    box-shadow: 2px 2px 20px #000;
+    background-color: white;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.chart__title {
+    font-size: 2.25rem;
+    font-weight: normal;
+    text-align: center;
+}
+
+
