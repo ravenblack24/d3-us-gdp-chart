@@ -61,8 +61,14 @@ document.addEventListener('DOMContentLoaded', function() {
                  .attr("height", h)
                  .attr("class", "chart__svg");
 
-      
-      /* Plot bars on chart */
+      /* Define tooltip */                 
+      var tooltip = d3.select(".chart")
+                      .append("div")
+                      .attr("id", "tooltip")
+                      .attr("style", "position: absolute; opacity: 0;")
+                      .attr("class", "tooltip");
+
+      /* Plot bars on chart and tooltip visibility */
       svg.selectAll("rect")
         .data(dTest)
         .enter()
@@ -73,25 +79,67 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("y", (dTest) => yScale(dTest[1]))
         .attr("width", w/dTest.length)
         .attr("height", (dTest) => (h - padding) - yScale(dTest[1]))
-        .attr("fill", "navy")
-        .attr("class", "bar");
+        .attr("fill", "#1C2541")
+        .attr("class", "bar")
+        .on("mouseover", function(h) {         
+          tooltip.html(getFormattedDate(h[0]) + "<br />"+ getFormattedGDP(h[1]))  
+            .style("left", (d3.mouse(this)[0]+60) + "px")     
+            .style("top", (d3.mouse(this)[1]+80) + "px")
+            .style("opacity", 1) 
+        })
+        .on('mouseout', () => {
+          d3.select("#tooltip")
+            .style("opacity", 0);
+        })
 
       /* Graph axes */ 
       const xAxis = d3.axisBottom(xScale);              
       const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
-        .attr("id", "xAxis")
+        .attr("id", "x-Axis")
         .attr("transform", "translate(0," + (h - padding) + ")")
-        .attr("fill", "black")
+        .attr("fill", "#0B132B")
         .call(xAxis);
       
       svg.append("g")
-        .attr("id", "yAxis")
+        .attr("id", "y-Axis")
         .attr("transform", "translate("+padding+", 0)")
-        .attr("fill", "black")
+        .attr("fill", "#0B132B")
         .call(yAxis);
-      
+
+
+      /* Get formatted date for tooltip display */  
+      const getFormattedDate = (date) => {
+          let year = new Date(date).getFullYear();
+          let month = new Date(date).getMonth()+1
+          let quarter = "Q";
+
+          switch(month) {
+              case 1:
+                quarter += "1"
+                break;
+              case 4:
+                quarter += "2"
+                break;
+              case 7:
+                quarter += "3"
+                break;
+              case 10:
+                quarter += "4"
+                break;
+              default:
+                quarter += "Error!"
+                break;
+          }
+          return `${year} ${quarter}`;
+      }
+
+      /* get formatted GDP value for tooltip display */
+      const getFormattedGDP = (value) => {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value) + " Billion";
+      }  
+  
     }
   });
   
