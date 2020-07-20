@@ -2,18 +2,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json';
     const req = new XMLHttpRequest();
     req.open("GET", url, true);
+    req.onerror = () => {
+          console.log("Error getting data");
+    };
     req.send();
-    req.onload = function() {
-       const dataset = JSON.parse(req.responseText);
-        const data = dataset.data;
+    req.onload = () => {
+      const dataset = JSON.parse(req.responseText);
+      drawChart(dataset);
+    }
+  });
+
+  var drawChart = (dataset) => {
+   
+      const data = dataset.data;
 
       /* Get max and min values for year range */
       const xMax = new Date(d3.max(data, (item) => item[0]));
       const xMin = new Date(d3.min(data, (item) => item[0]));
       
-      /* Get max and min values for gdp data range */
+      /* Get max value for gdp data range */
       const yMax = d3.max(data, (item) => item[1]);
-      const yMin = d3.min(data, (item) => item[1]);
 
       /* Specify dimensions for svg */
       const w = 830;
@@ -21,11 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const padding = 40;
 
       /* Scaling data to fit svg dimensions */
-      var xScale = d3.scaleTime()
+      const xScale = d3.scaleTime()
                       .domain([xMin, xMax])
                       .range([padding, w-padding]);
 
-      var yScale = d3.scaleLinear()
+      const yScale = d3.scaleLinear()
                       .domain([0, yMax])
                       .range([h-padding, padding]);
 
@@ -37,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                  .attr("class", "chart__svg");
 
       /* Define tooltip */                 
-      var tooltip = d3.select(".chart")
+      const tooltip = d3.select(".chart")
                       .append("div")
                       .attr("id", "tooltip")
                       .attr("style", "position: absolute; opacity: 0;")
@@ -84,39 +92,35 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("transform", "translate("+padding+", 0)")
         .attr("fill", "#0B132B")
         .call(yAxis);
+  }
 
+  /* Get formatted date for tooltip display */  
+  const getFormattedDate = (date) => {
+    let year = new Date(date).getFullYear();
+    let month = new Date(date).getMonth()+1
+    let quarter = "Q";
 
-      /* Get formatted date for tooltip display */  
-      const getFormattedDate = (date) => {
-          let year = new Date(date).getFullYear();
-          let month = new Date(date).getMonth()+1
-          let quarter = "Q";
-
-          switch(month) {
-              case 1:
-                quarter += "1"
-                break;
-              case 4:
-                quarter += "2"
-                break;
-              case 7:
-                quarter += "3"
-                break;
-              case 10:
-                quarter += "4"
-                break;
-              default:
-                quarter += "Error!"
-                break;
-          }
-          return `${year} ${quarter}`;
-      }
-
-      /* get formatted GDP value for tooltip display */
-      const getFormattedGDP = (value) => {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value) + " Billion";
-      }  
+    switch(month) {
+        case 1:
+          quarter += "1"
+          break;
+        case 4:
+          quarter += "2"
+          break;
+        case 7:
+          quarter += "3"
+          break;
+        case 10:
+          quarter += "4"
+          break;
+        default:
+          quarter += "Error!"
+          break;
     }
-  });
-  
-  
+    return `${year} ${quarter}`;
+}
+
+/* get formatted GDP value for tooltip display */
+const getFormattedGDP = (value) => {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value) + " Billion";
+} 
