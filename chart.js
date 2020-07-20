@@ -7,31 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
        const dataset = JSON.parse(req.responseText);
         const dTest = dataset.data;
 
-      // const datasetTest = { "data": [
-      //   [
-      //     "1945-01-01",
-      //     100
-      //   ],
-      //   [
-      //     "1950-04-01",
-      //     150
-      //   ],
-      //   [
-      //     "1955-07-01",
-      //     50
-      //   ],
-      //   [
-      //     "1960-10-01",
-      //     200
-      //   ],
-      //   [
-      //     "1965-01-01",
-      //     300
-      //   ]
-      // ]}
-
-      // const dTest = datasetTest.data;
-
       /* Get max and min values for year range */
       const xMax = new Date(d3.max(dTest, (item) => item[0]));
       const xMin = new Date(d3.min(dTest, (item) => item[0]));
@@ -85,7 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
           tooltip.html(getFormattedDate(h[0]) + "<br />"+ getFormattedGDP(h[1]))  
             .style("left", (d3.mouse(this)[0]+60) + "px")     
             .style("top", (d3.mouse(this)[1]+80) + "px")
-            .style("opacity", 1) 
+            .style("opacity", 1)
+            .attr("data-date", h[0]) 
         })
         .on('mouseout', () => {
           d3.select("#tooltip")
@@ -97,13 +73,13 @@ document.addEventListener('DOMContentLoaded', function() {
       const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
-        .attr("id", "x-Axis")
+        .attr("id", "x-axis")
         .attr("transform", "translate(0," + (h - padding) + ")")
         .attr("fill", "#0B132B")
         .call(xAxis);
       
       svg.append("g")
-        .attr("id", "y-Axis")
+        .attr("id", "y-axis")
         .attr("transform", "translate("+padding+", 0)")
         .attr("fill", "#0B132B")
         .call(yAxis);
