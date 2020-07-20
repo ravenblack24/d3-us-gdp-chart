@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // const dTest = datasetTest.data;
       
-      const xMax = new Date(d3.max(dTest, (item) => item[0])).getFullYear();
-      const xMin = new Date(d3.min(dTest, (item) => item[0])).getFullYear();
+      const xMax = new Date(d3.max(dTest, (item) => item[0]));
+      const xMin = new Date(d3.min(dTest, (item) => item[0]));
 
       console.log(xMin, xMax)
 
@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
       const h = 450;
       const padding = 40;
 
-      var xScale = d3.scaleLinear()
+      /* Scaling data to fit svg chart */
+
+      var xScale = d3.scaleTime()
                       .domain([xMin, xMax])
                       .range([padding, w-padding]);
 
@@ -65,14 +67,16 @@ document.addEventListener('DOMContentLoaded', function() {
         .append("rect")
         .attr("data-date", (dTest) => dTest[0])
         .attr("data-gdp", (dTest) => dTest[1])
-        .attr("x", (dTest) => xScale(new Date(dTest[0]).getFullYear()))
+        .attr("x", (dTest) => xScale(new Date(dTest[0])))
         .attr("y", (dTest) => yScale(dTest[1]))
         .attr("width", w/dTest.length)
         .attr("height", (dTest) => (h - padding) - yScale(dTest[1]))
         .attr("fill", "navy")
         .attr("class", "bar");
 
-      const xAxis = d3.axisBottom(xScale);
+
+      /* Graph axes */ 
+      const xAxis = d3.axisBottom(xScale);              
       const yAxis = d3.axisLeft(yScale);
 
       svg.append("g")
