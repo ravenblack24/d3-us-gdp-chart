@@ -5,15 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
     req.send();
     req.onload = function() {
        const dataset = JSON.parse(req.responseText);
-        const dTest = dataset.data;
+        const data = dataset.data;
 
       /* Get max and min values for year range */
-      const xMax = new Date(d3.max(dTest, (item) => item[0]));
-      const xMin = new Date(d3.min(dTest, (item) => item[0]));
+      const xMax = new Date(d3.max(data, (item) => item[0]));
+      const xMin = new Date(d3.min(data, (item) => item[0]));
       
       /* Get max and min values for gdp data range */
-      const yMax = d3.max(dTest, (item) => item[1]);
-      const yMin = d3.min(dTest, (item) => item[1]);
+      const yMax = d3.max(data, (item) => item[1]);
+      const yMin = d3.min(data, (item) => item[1]);
 
       /* Specify dimensions for svg */
       const w = 830;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                       .range([padding, w-padding]);
 
       var yScale = d3.scaleLinear()
-                      .domain([yMin, yMax])
+                      .domain([0, yMax])
                       .range([h-padding, padding]);
 
       /* Define svg */
@@ -45,27 +45,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
       /* Plot bars on chart and tooltip visibility */
       svg.selectAll("rect")
-        .data(dTest)
+        .data(data)
         .enter()
         .append("rect")
-        .attr("data-date", (dTest) => dTest[0])
-        .attr("data-gdp", (dTest) => dTest[1])
-        .attr("x", (dTest) => xScale(new Date(dTest[0])))
-        .attr("y", (dTest) => yScale(dTest[1]))
-        .attr("width", w/dTest.length)
-        .attr("height", (dTest) => (h - padding) - yScale(dTest[1]))
+        .attr("data-date", (data) => data[0])
+        .attr("data-gdp", (data) => data[1])
+        .attr("x", (data) => xScale(new Date(data[0])))
+        .attr("y", (data) => yScale(data[1]))
+        .attr("width", w/data.length)
+        .attr("height", (data) => (h - padding) - yScale(data[1]))
         .attr("fill", "#1C2541")
         .attr("class", "bar")
         .on("mouseover", function(h) {         
-          tooltip.html(getFormattedDate(h[0]) + "<br />"+ getFormattedGDP(h[1]))  
-            .style("left", (d3.mouse(this)[0]+60) + "px")     
-            .style("top", (d3.mouse(this)[1]+80) + "px")
-            .style("opacity", 1)
+            tooltip
+              .html(getFormattedDate(h[0]) + "<br />"+ getFormattedGDP(h[1]))  
+              .style("left", (d3.mouse(this)[0]+60) + "px")     
+              .style("top", (d3.mouse(this)[1]+80) + "px")
+              .style("opacity", 1)
             .attr("data-date", h[0]) 
         })
         .on('mouseout', () => {
-          d3.select("#tooltip")
-            .style("opacity", 0);
+            tooltip
+              .style("opacity", 0);
         })
 
       /* Graph axes */ 
@@ -115,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const getFormattedGDP = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value) + " Billion";
       }  
-  
     }
   });
   
