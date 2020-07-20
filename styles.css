@@ -12,21 +12,39 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+.container {
+    margin: 4em;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding:0;
+
+}
+
 .chart {
-    width: 900px;
-    margin: 0 auto;
     box-shadow: 2px 2px 20px #000;
     background-color: white;
-    padding: 0.5em;
     display: flex;
     flex-direction: column;
     text-align: center;
+    justify-content: center;
+    min-height: 500px; 
+    padding: 2em;
+    
 }
 
 .chart__title {
     font-size: 2.25rem;
     font-weight: normal;
     text-align: center;
+}
+
+
+
+svg{
+    border: 1px solid red;
+    var margin = {top: 20, right: 20, bottom: 70, left: 120}
 }
 
 
