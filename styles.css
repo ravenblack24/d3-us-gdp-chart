@@ -40,11 +40,14 @@ body {
     text-align: center;
 }
 
+.bar:hover {
+    fill: white;
+}
 
 
 svg{
     border: 1px solid red;
-    var margin = {top: 20, right: 20, bottom: 70, left: 120}
+
 }
 
 
