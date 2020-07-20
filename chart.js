@@ -31,21 +31,21 @@ document.addEventListener('DOMContentLoaded', function() {
       // ]}
 
       // const dTest = datasetTest.data;
-      
+
+      /* Get max and min values for year range */
       const xMax = new Date(d3.max(dTest, (item) => item[0]));
       const xMin = new Date(d3.min(dTest, (item) => item[0]));
-
-      console.log(xMin, xMax)
-
+      
+      /* Get max and min values for gdp data range */
       const yMax = d3.max(dTest, (item) => item[1]);
       const yMin = d3.min(dTest, (item) => item[1]);
-    
+
+      /* Specify dimensions for svg */
       const w = 830;
       const h = 450;
       const padding = 40;
 
-      /* Scaling data to fit svg chart */
-
+      /* Scaling data to fit svg dimensions */
       var xScale = d3.scaleTime()
                       .domain([xMin, xMax])
                       .range([padding, w-padding]);
@@ -53,14 +53,16 @@ document.addEventListener('DOMContentLoaded', function() {
       var yScale = d3.scaleLinear()
                       .domain([yMin, yMax])
                       .range([h-padding, padding]);
-  
+
+      /* Define svg */
       const svg = d3.select(".chart")
                  .append("svg")
                  .attr("width", w)
                  .attr("height", h)
                  .attr("class", "chart__svg");
-   
+
       
+      /* Plot bars on chart */
       svg.selectAll("rect")
         .data(dTest)
         .enter()
@@ -73,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("height", (dTest) => (h - padding) - yScale(dTest[1]))
         .attr("fill", "navy")
         .attr("class", "bar");
-
 
       /* Graph axes */ 
       const xAxis = d3.axisBottom(xScale);              
