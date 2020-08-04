@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
                  .append("svg")
                  .attr("width", w)
                  .attr("height", h)
-                 .attr("class", "chart__svg");
+                 .attr("class", "chart__svg")
+            
 
       /* Define tooltip */                 
       const tooltip = d3.select(".chart")
