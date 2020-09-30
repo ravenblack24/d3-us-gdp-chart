@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json';
+    // Make request to external dataset source
     const req = new XMLHttpRequest();
     req.open("GET", url, true);
     req.onerror = () => {
