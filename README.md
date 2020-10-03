@@ -2,11 +2,14 @@
 > Repository for my solution to the freeCodeCamp data visualisation Bar Chart challenge.
 
 ## Table of contents
+* [Status](#status)
 * [General Info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Status](#status)
 * [Contact](#contact)
+
+## Status
+Project is complete and [can be seen demo is available here](https://ravenblack24.github.io/d3-us-gdp-chart/).
 
 ## General info
 This chart was built to satisfy and subsequently validated against the following User Stories:
@@ -42,9 +45,6 @@ This chart was built to satisfy and subsequently validated against the following
 
 ## Setup
 Just open index.html!
-
-## Status
-Project is complete and [can be seen demo is available here](https://ravenblack24.github.io/d3-us-gdp-chart/).
 
 ## Contact
 Created by [Kay Pea](https://imkp.co.uk) - feel free to contact me!
